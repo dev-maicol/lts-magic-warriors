@@ -12,12 +12,10 @@
   {{-- <title>Ing. Maicol German Condori Adrian - Portafolio </title> --}}
   <meta content="Latín Community Magic Warriors - Clash of Clans - developed by Ing. Maicol German Condori Adrian"
     name="description">
-  <meta content="Latín Community Magic Warriors, clash of clans, resistencia coc, maicol german condori adrian, Ing. Maicol German Condori Adrian,ingeniero informático" name="keywords">
+  <meta content="lts magic warriors, magic warriors clash of clans,Latín Community Magic Warriors, clash of clans, resistencia coc, maicol german condori adrian, Ing. Maicol German Condori Adrian,ingeniero informático" name="keywords">
   <meta name="author" content="Maicol German Condori Adrian">
 
-  <meta property="og:image" content="https://magic-warriors.maivisoft.com/assets_public/img/magic-warriors.webp" />
-  {{-- <meta property="og:image" content="https://scontent.flpb1-2.fna.fbcdn.net/v/t39.30808-6/401708113_10161602675301079_8692765667288386892_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=dd477f&_nc_ohc=Frkyg904YqYAX8FE_MQ&_nc_ht=scontent.flpb1-2.fna&oh=00_AfChUzegCzbZmjF0ltFu37qKPAt4cl5q950PZ2_GGUpQ-Q&oe=6599D1D9" /> --}}
-  
+  <meta property="og:image" content="https://magic-warriors.maivisoft.com/assets_public/img/logo_magic.webp" />
 
   <!-- Favicons -->
   <link href="{{ asset('assets_public')}}/img/favicon.png" rel="icon">
