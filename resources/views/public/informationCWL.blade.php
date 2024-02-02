@@ -194,17 +194,22 @@
                 ```Clan War League``` <br>
                 Day -> *{{ $day}}* <br>
                 State -> *{{ $data['state']}}* <br>
-                _________________________________ <br>
+                ____________________________ <br>
                 *{{ $clanYou['name']}}* <br>
-                Attacks -> *{{ $clanYou['attacks']}}/{{ $data['teamSize'] * $data['attacksPerMember']}}* <br>
-                Stars -> *{{ $clanYou['stars']}}* <br>
-                Percentage -> *{{ round($clanYou['destructionPercentage'], 2)}}%* <br>
-                _________________________________ <br>
+                @if ( $stateWar != 'preparation')
+                  Attacks -> *{{ $clanYou['attacks']}}/{{ $data['teamSize'] * ($data['attacksPerMember'] ?? 1)}}* <br>
+                  Stars -> *{{ $clanYou['stars']}}* <br>
+                  Percentage -> *{{ round($clanYou['destructionPercentage'], 2)}}%* <br>
+                @endif
+                
+                ____________________________ <br>
                 *{{ $clanOpponent['name']}}* <br>
-                Attacks -> *{{ $clanOpponent['attacks']}}/{{ $data['teamSize'] * $data['attacksPerMember']}}* <br>
-                Stars -> *{{ $clanOpponent['stars']}}* <br>
-                Percentage -> *{{ round($clanOpponent['destructionPercentage'], 2)}}%* <br>
-                _________________________________ <br>
+                @if ( $stateWar != 'preparation')
+                Attacks -> *{{ $clanOpponent['attacks']}}/{{ $data['teamSize'] * ($data['attacksPerMember'] ?? 1)}}* <br>
+                  Stars -> *{{ $clanOpponent['stars']}}* <br>
+                  Percentage -> *{{ round($clanOpponent['destructionPercentage'], 2)}}%* <br>
+                @endif
+                ____________________________ <br>
                 @php
                     // if ($stateWar == 'inWar' || $stateWar == 'preparation') {
                     //   echo "Time left -> *{{ $time_left->h}}Hrs. {{ $time_left->i}}Min* <br>";
@@ -218,7 +223,7 @@
                   Time left -> *{{ $time_left}}*" <br>
                 @endif
                 {{-- Time left -> *{{ $time_left->h}}Hrs. {{ $time_left->i}}Min* <br> --}}
-                _________________________________ <br>
+                ____________________________ <br>
                 @if ( $stateWar == 'inWar')
                   Remaining attacks -> <br>
                 @endif
@@ -230,9 +235,9 @@
                     $membersSorted = collect($members)->sortBy('mapPosition')->toArray();
                     
                 @endphp
-                _________________________________ <br>
+                ____________________________ <br>
                 | Member (TH) | <br>
-                _________________________________ <br>
+                ____________________________ <br>
                 @foreach ($membersSorted as $member)
                   @php
                     $keyFind = !array_key_exists('attacks', $member) ;
@@ -244,7 +249,8 @@
                 @endforeach
                 {{-- Remaining attacks -> <br>
                 Villages for war -> <br> --}}
-                
+                ____________________________ <br>
+                _Community LTS Magic Warriors_ <br>
                   
                 
 

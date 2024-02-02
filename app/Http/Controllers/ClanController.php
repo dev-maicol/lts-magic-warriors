@@ -380,6 +380,7 @@ class ClanController extends Controller
             // return $response;
             // Convertir la respuesta a un arreglo asociativo
             $data = $response->json();
+            // return $data;
             if( isset($data['reason']) && $data['reason'] === 'notFound')
             {
                 $error[0] = "CWL error!";
@@ -409,7 +410,10 @@ class ClanController extends Controller
                     // se encontro la guerra donde esta el clan buscado por el tag
                     // return $responseWar->json();
                     $data = $responseWar->json();
-                    // return $data;
+                    // return $request;
+                    $request->merge(['id_clan' => $request->tag_clan_cwl]);
+                    $request->merge(['action' => 'CWL']);
+                    $request->merge(['date' => $today]);
                     Controls::create($request->all());
                     $totalDay = Controls::where('date', $today)->count();
                     return view('public.informationCWL', compact('data', 'clan', 'day', 'totalDay', 'limit'));
