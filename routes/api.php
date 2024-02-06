@@ -43,3 +43,5 @@ Route::get('/datetimelocal', function () {
 });
 
 Route::post('members', 'App\Http\Controllers\MemberController@store')->name('clans.war');
+
+Route::post('tagsClans', 'App\Http\Controllers\ClanController@cwlPublicRank')->name('clans.tags');

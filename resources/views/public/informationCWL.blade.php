@@ -230,6 +230,9 @@
                 @if ( $stateWar == 'preparation')
                   Villages for war -> <br>
                 @endif
+                @if ( $stateWar == 'warEnded')
+                  They did *NOT* attack -> <br>
+                @endif
                 @php
                     $members = $clanYou['members'];
                     $membersSorted = collect($members)->sortBy('mapPosition')->toArray();

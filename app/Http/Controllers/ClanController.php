@@ -463,6 +463,106 @@ class ClanController extends Controller
         // return $output;
     }
 
+    public function cwlPublicRank(Request $request){
+        $tagClan = $request->tag;
+        $clan = Clan::where('id', 1)->where('state', 1)->first();
+        if($clan){
+            $url = "https://cocproxy.royaleapi.dev" . '/v1/clans/%23' . $tagClan . "/currentwar/leaguegroup";
+            $headers = [
+                'Authorization' => 'Bearer '.env('API_KEY'),
+                'Content-Type' => 'application/json',
+            ];
+            $response = Http::withHeaders($headers)->get($url);
+            // return $response;
+            // Convertir la respuesta a un arreglo asociativo
+            $data = $response->json();
+            $tagsClans = [];
+            $rounds = [];
+            foreach( $data['clans'] as $clanData){
+                $tagsClans[$clanData['tag']] = [
+                    'stars' => 0,
+                    'percentage' => 0,
+                    'name' => $clanData['name']
+                ];
+            }
+            // return $tagsClans;
+            foreach( $data['rounds'] as $clanData){
+                foreach( $clanData['warTags'] as $warTag){
+                    if( $warTag != "#0"){
+                        $rounds[] = $warTag;
+                    }
+                }
+            }
+            // $tagResistencia = "#RUG0LC2Q";
+            $resss = "";
+            $url2 = "https://cocproxy.royaleapi.dev/v1/clanwarleagues/wars/%23";
+            foreach( $rounds as $round){
+                $response2 = Http::withHeaders($headers)->get($url2 . substr($round, 1));
+                $data2 = $response2->json();
+                // return $data2;
+                if( $data2['state'] != 'preparation'){
+                    $clanData = $data2['clan'];
+                    $opponentData = $data2['opponent'];
+
+
+
+                    $tagsClans[$clanData['tag']]['stars'] = $tagsClans[$clanData['tag']]['stars'] + $clanData['stars'];
+                    $tagsClans[$opponentData['tag']]['stars'] = $tagsClans[$opponentData['tag']]['stars'] + $opponentData['stars'];
+
+                    if ( $data2['state'] == 'warEnded') {
+                        if ( $clanData['stars'] > $opponentData['stars']) {
+                            $tagsClans[$clanData['tag']]['stars'] = $tagsClans[$clanData['tag']]['stars'] + 10;
+                        }
+                        if ( $opponentData['stars'] > $clanData['stars']) {
+                            $tagsClans[$opponentData['tag']]['stars'] = $tagsClans[$opponentData['tag']]['stars'] + 10;
+                        }
+                    }
+
+                    // $tagsClans[$clanData['tag']]['percentage'] = $tagsClans[$clanData['tag']]['percentage'] + $clanData['destructionPercentage'];
+                    // $tagsClans[$opponentData['tag']]['percentage'] = $tagsClans[$opponentData['tag']]['percentage'] + $opponentData['destructionPercentage'];
+
+                    // foreach( $clanData['members'] as $clanMember){
+                    //     $tagsClans[$clanData['tag']]['percentage'] = $tagsClans[$clanData['tag']]['percentage'] + (isset($clanMember['attacks']['0']['destructionPercentage']) ? $clanMember['attacks']['0']['destructionPercentage'] : 0);
+                    //     if( $clanData['tag'] == '#RUG0LC2Q'){
+                    //         $resss = $resss . (isset($clanMember['attacks']['0']['destructionPercentage']) ? $clanMember['attacks']['0']['destructionPercentage'] : 0) . ", ";
+                    //     }
+                    // }
+                    // foreach( $opponentData['members'] as $opponentMember){
+                    //     $tagsClans[$opponentData['tag']]['percentage'] = $tagsClans[$opponentData['tag']]['percentage'] + (isset($opponentMember['attacks']['0']['destructionPercentage']) ? $opponentMember['attacks']['0']['destructionPercentage'] : 0);
+                    //     if( $opponentData['tag'] == '#RUG0LC2Q'){
+                    //         $resss = $resss . (isset($opponentMember['attacks']['0']['destructionPercentage']) ? $opponentMember['attacks']['0']['destructionPercentage'] : 0) . ", ";
+                    //     }
+                    // }
+                    // if( $clanData['tag'] == '#RUG0LC2Q' || $opponentData['tag'] == '#RUG0LC2Q'){
+                    //     $resss = $resss . "--\n";
+
+                    // }
+
+                    // if( $clanData['tag'] == $tagResistencia){
+                    //     $resss = $resss . $clanData['destructionPercentage'] . ", ";
+                    // }
+                    // if( $opponentData['tag'] == $tagResistencia){
+                    //     $resss = $resss . $opponentData['destructionPercentage'] . ", ";
+                    // }
+
+                }
+                
+                
+            }
+
+            // Convertir el array a una colección de Laravel
+            $tagsClansCollection = collect($tagsClans);
+
+            // Ordenar la colección por la propiedad "stars" en orden descendente
+            $tagsClansSorted = $tagsClansCollection->sortByDesc('stars')->all();
+            
+
+            return $tagsClansSorted;
+        }else{
+            return "Clan DB NO";
+        }
+    }
+
 
     // controlador para mostrar informacion de la war en la vista general o public
     public function warPublic(Request $request)
